@@ -3,7 +3,6 @@ from django.contrib.flatpages.models import FlatPage
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.db import models
 
-from ckeditor.fields import RichTextField
 from ckeditor.widgets import CKEditorWidget
 
 
