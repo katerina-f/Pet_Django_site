@@ -8,9 +8,9 @@ class Realty(models.Model):
     space = models.IntegerField(verbose_name='Площадь')
     published_at = models.DateField(verbose_name='Дата публикации', auto_now_add=True)
     description = models.TextField(verbose_name='Описание')
-    tags = models.ManyToManyField(Tag, related_name="Тэги")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    saller = models.ForeignKey(Saller, on_delete=CASCADE)
+    tags = models.ManyToManyField('Tag', related_name="Тэги")
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    saller = models.ForeignKey('Saller', on_delete=CASCADE)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100)
 
     class Meta:
