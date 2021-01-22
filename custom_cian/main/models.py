@@ -11,7 +11,7 @@ class Realty(models.Model):
     tags = models.ManyToManyField(Tag, related_name="Тэги")
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     saller = models.ForeignKey(Saller, on_delete=CASCADE)
-    slug = models.CharField(verbose_name='Ссылка', max_length=100)
+    slug = models.SlugField(verbose_name='Ссылка', max_length=100)
 
     def __str__(self):
         return self.name
@@ -30,10 +30,10 @@ class Saller(models.Model):
 class Category(models.Model):
 
     name = models.CharField(verbose_name='Название', max_length=100)
-    slug = models.CharField(verbose_name='Ссылка', max_length=100)
+    slug = models.SlugField(verbose_name='Ссылка', max_length=100)
 
 
 class Tag(models.Model):
     name = models.CharField(verbose_name='Название', max_length=100)
-    slug = models.CharField(verbose_name='Ссылка', max_length=100)
+    slug = models.SlugField(verbose_name='Ссылка', max_length=100)
     realty_list = models.ManyToManyField(Realty, related_name="Список недвижимости")
