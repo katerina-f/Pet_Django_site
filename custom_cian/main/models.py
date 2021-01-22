@@ -13,6 +13,11 @@ class Realty(models.Model):
     saller = models.ForeignKey(Saller, on_delete=CASCADE)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100)
 
+    class Meta:
+        verbose_name = "Объект недвижимости"
+        verbose_name_plural = "Объекты недвижимости"
+        ordering = ["-published_at"]
+
     def __str__(self):
         return self.name
 
@@ -23,6 +28,11 @@ class Saller(models.Model):
     last_name = models.CharField(verbose_name="Фамилия", max_length=50)
     registered_at = models.DateField(verbose_name="Дата регистрации", auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Продавец"
+        verbose_name_plural = "Продавцы"
+        ordering = ["last_name", "first_name"]
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -32,8 +42,24 @@ class Category(models.Model):
     name = models.CharField(verbose_name='Название', max_length=100)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100)
 
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
 
 class Tag(models.Model):
     name = models.CharField(verbose_name='Название', max_length=100)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100)
     realty_list = models.ManyToManyField(Realty, related_name="Список недвижимости")
+
+    class Meta:
+        verbose_name = "Тэг"
+        verbose_name_plural = "Тэги"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
