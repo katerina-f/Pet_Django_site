@@ -5,6 +5,8 @@ from django.db import models
 
 from ckeditor.widgets import CKEditorWidget
 
+from .models import Category
+
 
 class FlatPageAdmin(FlatPageAdmin):
     formfield_overrides = {
@@ -14,3 +16,4 @@ class FlatPageAdmin(FlatPageAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
+admin.site.register(Category)
