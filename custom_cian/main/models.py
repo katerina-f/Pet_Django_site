@@ -1,3 +1,5 @@
+from pytils import translit
+
 from django.db import models
 
 
@@ -22,6 +24,10 @@ class Realty(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = translit.slugify(f"{self.category} {self.name}")
+        super(Realty, self).save(*args, **kwargs)
+
 
 class Saller(models.Model):
 
@@ -40,8 +46,8 @@ class Saller(models.Model):
 
 class Category(models.Model):
 
-    name = models.CharField(verbose_name='Название', max_length=100)
-    slug = models.SlugField(verbose_name='Ссылка', max_length=100)
+    name = models.CharField(verbose_name='Название', max_length=100, unique=True)
+    slug = models.SlugField(verbose_name='Ссылка', max_length=100, unique=True, editable=False)
 
     class Meta:
         verbose_name = "Категория"
@@ -51,10 +57,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = translit.slugify(f"category-{self.name}")
+        super(Category, self).save(*args, **kwargs)
+
 
 class Tag(models.Model):
-    name = models.CharField(verbose_name='Название', max_length=100)
-    slug = models.SlugField(verbose_name='Ссылка', max_length=100)
+    name = models.CharField(verbose_name='Название', max_length=100, unique=True)
+    slug = models.SlugField(verbose_name='Ссылка', max_length=100, unique=True, editable=False)
     realty_list = models.ManyToManyField(Realty, related_name="realty_list")
 
     class Meta:
@@ -64,3 +74,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = translit.slugify(f"tag-{self.name}")
+        super(Tag, self).save(*args, **kwargs)
