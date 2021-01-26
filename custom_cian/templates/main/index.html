@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load custom_tags %}
+{% load custom_filters %}
 {% current_time "%Y-%m-%d %I:%M %p" as the_time %}
 
 {% block title %}
@@ -12,4 +13,8 @@
     <h4>Текущее время: {% current_time "%d-%m-%Y %I:%M" as the_time %} {{the_time}}</h4>
     <div style="display: block;"><a href="/pages/about/">О нас</a></div>
     <div style="display: block;"><a href="/pages/contacts/">Контакты</a></div>
+
+    <div class="card">
+        Строка "Привет мир!" с фильтром: <b>{{ "Привет мир!"|reverse_string }}</b>
+    </div>
 {% endblock %}
