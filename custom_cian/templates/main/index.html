@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
+{% current_time "%Y-%m-%d %I:%M %p" as the_time %}
 
 {% block title %}
     IndexPage
@@ -7,6 +9,7 @@
 
 {% block content %}
     <h2>Дефолтная страница сайта</h2>
+    <h4>Текущее время: {% current_time "%d-%m-%Y %I:%M" as the_time %} {{the_time}}</h4>
     <div style="display: block;"><a href="/pages/about/">О нас</a></div>
     <div style="display: block;"><a href="/pages/contacts/">Контакты</a></div>
 {% endblock %}
