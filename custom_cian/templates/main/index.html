@@ -7,9 +7,9 @@
 
 {% block content %}
     <h2>Дефолтная страница сайта</h2>
+    <p>Текущий пользователь: {{current_user}}</p>
     <div style="display: block;"><a href="/pages/about/">О нас</a></div>
     <div style="display: block;"><a href="/pages/contacts/">Контакты</a></div>
-
     {% if turn_on_block %}
         <div class="card">
             <div class="card-body">
