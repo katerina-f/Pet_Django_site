@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Realty List
+{% endblock %}
+
+{% block content %}
+    {% include 'main/components/header.html' with current_user=user %}
+    <h2>Объекты недвижимости</h2>
+    <ul>
+        {% for realty in realty_list %}
+            <li><a href="{{realty.slug}}">{{ realty.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
