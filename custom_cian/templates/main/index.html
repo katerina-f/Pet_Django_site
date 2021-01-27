@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'main/components/header.html' with current_user=user %}
     <h2>Дефолтная страница сайта</h2>
     <h4>Текущее время: {% current_time "%d-%m-%Y %I:%M" as the_time %} {{the_time}}</h4>
     <div style="display: block;"><a href="/pages/about/">О нас</a></div>
@@ -17,4 +18,11 @@
     <div class="card">
         Строка "Привет мир!" с фильтром: <b>{{ "Привет мир!"|reverse_string }}</b>
     </div>
+    {% if turn_on_block %}
+        <div class="card">
+            <div class="card-body">
+                Скрываемый по желанию блок с некоторой информацией
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
