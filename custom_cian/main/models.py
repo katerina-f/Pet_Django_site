@@ -1,4 +1,4 @@
-from pytils import translit
+from pytils import dt, translit
 
 from django.db import models
 
@@ -27,6 +27,9 @@ class Realty(models.Model):
     def save(self, *args, **kwargs):
         self.slug = translit.slugify(f"{self.category} {self.name}")
         super(Realty, self).save(*args, **kwargs)
+
+    def published_at_ru(self):
+        return dt.ru_strftime(u"%d %B %Y", self.published_at, inflected=True)
 
 
 class Saller(models.Model):
