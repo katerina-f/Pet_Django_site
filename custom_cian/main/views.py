@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from .models import Realty, Saller
+from .models import Realty, Tag
 
 
 def index(request):
@@ -10,8 +10,13 @@ def index(request):
 
 
 class RealtyListView(ListView):
-    paginate_by = 10
+    paginate_by = 2
     model = Realty
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["tags"] = Tag.objects.all()
+        return context
 
 
 class RealtyDetailView(DetailView):
