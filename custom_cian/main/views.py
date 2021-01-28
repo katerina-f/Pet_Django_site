@@ -10,6 +10,7 @@ def index(request):
 
 
 class RealtyListView(ListView):
+    paginate_by = 10
     model = Realty
 
 

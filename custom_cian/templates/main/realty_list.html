@@ -7,8 +7,8 @@
 {% block content %}
     {% include 'main/components/header.html' with current_user=user %}
     <h2>Объекты недвижимости</h2>
-    <div class="row mt-4">
-    {% for realty in realty_list %}
+    <div class="row mt-4 align-items-start">
+    {% for realty in page_obj.object_list %}
         <div class="col-sm-6 mt-4">
             <div class="card">
                 <div class="card-body">
