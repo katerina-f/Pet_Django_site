@@ -11,9 +11,9 @@ class Realty(models.Model):
     published_at = models.DateField(verbose_name='Дата публикации', auto_now_add=True)
     description = models.TextField(verbose_name='Описание')
     tags = models.ManyToManyField('Tag', related_name="tags")
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.PROTECT)
     saller = models.ForeignKey('Saller', on_delete=models.CASCADE)
-    slug = models.SlugField(verbose_name='Ссылка', max_length=100)
+    slug = models.SlugField(verbose_name='Ссылка', max_length=100, null=True)
     is_mortgage_available = models.BooleanField(verbose_name="Возможность ипотеки", blank=False)
 
     class Meta:

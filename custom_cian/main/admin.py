@@ -5,7 +5,7 @@ from django.db import models
 
 from ckeditor.widgets import CKEditorWidget
 
-from .models import Category
+from .models import *
 
 
 class FlatPageAdmin(FlatPageAdmin):
@@ -17,3 +17,8 @@ class FlatPageAdmin(FlatPageAdmin):
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 admin.site.register(Category)
+
+# временно зарегистрированы для удобства добавления
+admin.site.register(Realty)
+admin.site.register(Saller)
+admin.site.register(Tag)
