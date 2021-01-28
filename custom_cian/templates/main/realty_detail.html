@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Realty Detail
+{% endblock %}
+
+{% block content %}
+    {% include 'main/components/header.html' with current_user=user %}
+    <h2>{{realty.name}}</h2>
+    <div class="col mt-4">
+        {{realty.description}}
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3 mt-4">
+        <p>Продавец: {{realty.saller}}</p>
+        </div>
+        <div class="col-sm-3 mt-4">
+        <p>Дата публикации: {{realty.published_at}}</p>
+        </div>
+    </div>
+
+{% endblock %}

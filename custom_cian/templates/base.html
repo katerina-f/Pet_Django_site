@@ -18,9 +18,16 @@
 
   </head>
   <body>
-
-    {% block content %} {% endblock %}
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col">
+          <!-- левый сайдбар  -->
+        </div>
+        <div class="col-10">
+          {% block content %} {% endblock %}
+        </div>
+      </div>
+    </div>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
   </body>
 </html>

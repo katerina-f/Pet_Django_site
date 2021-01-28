@@ -7,9 +7,18 @@
 {% block content %}
     {% include 'main/components/header.html' with current_user=user %}
     <h2>Объекты недвижимости</h2>
-    <ul>
-        {% for realty in realty_list %}
-            <li><a href="{{realty.slug}}">{{ realty.name }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="row mt-4">
+    {% for realty in realty_list %}
+        <div class="col-sm-6 mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ realty.name }}
+                    </h5>
+                    <a href="{{realty.slug}}">Детали</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
 {% endblock %}
