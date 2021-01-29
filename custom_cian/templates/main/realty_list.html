@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'main/components/header.html' with current_user=user %}
+    {% include 'main/components/header.html' with user=current_user %}
     <h2>Объекты недвижимости</h2>
     <div class="row mt-4 align-items-start">
         {% for realty in page_obj.object_list %}

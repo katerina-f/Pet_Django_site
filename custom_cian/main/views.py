@@ -10,13 +10,23 @@ def index(request):
 
 
 class RealtyListView(ListView):
-    paginate_by = 2
+    paginate_by = 1
     model = Realty
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["tags"] = Tag.objects.all()
+        context["current_user"] = self.request.user
+        context["current_tag"] = self.request.GET.get("tag") if self.request.GET.get("tag") else ""
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if tag_name := self.request.GET.get("tag"):
+            queryset = Realty.objects.filter(tags__name=tag_name)
+
+        return queryset
 
 
 class RealtyDetailView(DetailView):
