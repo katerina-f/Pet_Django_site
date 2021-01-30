@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from .models import Realty, Tag
+from django.views.generic.edit import UpdateView
+
+from .models import Realty, Tag, Saller
 
 
 def index(request):
@@ -31,3 +33,8 @@ class RealtyListView(ListView):
 
 class RealtyDetailView(DetailView):
     model = Realty
+
+
+class SallerUpdateView(UpdateView):
+    model = Saller
+    fields = ["first_name", "last_name"]
