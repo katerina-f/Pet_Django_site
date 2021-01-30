@@ -39,6 +39,7 @@ class Saller(models.Model):
     last_name = models.CharField(verbose_name="Фамилия", max_length=50)
     registered_at = models.DateField(verbose_name="Дата регистрации", auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    email = models.EmailField(verbose_name="Email", null=True)
 
     class Meta:
         verbose_name = "Продавец"
