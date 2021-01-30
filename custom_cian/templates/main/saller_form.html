@@ -5,11 +5,9 @@
 {% endblock %}
 
 {% block content %}
-{% include 'main/components/header.html' with current_user=user %}
-<form>
-    <div class="form-group">
-        {{form}}
-    </div>
+<h3> Изменение пользователя </h3>
+<form action="post" >
+    {{ form.as_p }}
     <button type="submit" class="btn btn-primary mt-4">Submit</button>
 </form>
 {% endblock %}

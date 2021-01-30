@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'main/components/header.html' with current_user=user %}
     <h2>Дефолтная страница сайта</h2>
     <h4>Текущее время: {% current_time "%d-%m-%Y %I:%M" as the_time %} {{the_time}}</h4>
     <div style="display: block;"><a href="/pages/about/">О нас</a></div>

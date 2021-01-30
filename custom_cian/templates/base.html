@@ -24,6 +24,7 @@
           <!-- левый сайдбар  -->
         </div>
         <div class="col">
+          {% include 'main/components/header.html' with current_user=user %}
           {% block content %} {% endblock %}
         </div>
         <div class="col-2">

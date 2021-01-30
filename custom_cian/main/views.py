@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import UpdateView
@@ -35,6 +36,10 @@ class RealtyDetailView(DetailView):
     model = Realty
 
 
-class SallerUpdateView(UpdateView):
+class SallerUpdateView(LoginRequiredMixin, UpdateView):
     model = Saller
     fields = ["first_name", "last_name"]
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
