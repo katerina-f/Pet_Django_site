@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from .models import Realty, Tag, Saller
 
@@ -39,3 +39,8 @@ class RealtyDetailView(DetailView):
 class SallerUpdateView(LoginRequiredMixin, UpdateView):
     model = Saller
     fields = ["first_name", "last_name"]
+
+
+class RealtyCreateView(LoginRequiredMixin, CreateView):
+    model = Realty
+    fields = "__all__"

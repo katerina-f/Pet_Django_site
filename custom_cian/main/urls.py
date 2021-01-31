@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('realty_list/', views.RealtyListView.as_view(), name="realty_list"),
     path('realty_list/<slug:slug>/', views.RealtyDetailView.as_view(), name="realty_detail"),
-    path('accounts/profile/<int:pk>/', views.SallerUpdateView.as_view(), name="update_profile")
+    path('accounts/profile/<int:pk>/', views.SallerUpdateView.as_view(), name="update_profile"),
+    path('realty/add/', views.RealtyCreateView.as_view(), name="add_realty")
 ]
