@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
@@ -43,6 +44,19 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):
+    model = Realty
+    form_class = RealtyForm
+
+    def form_valid(self, form):
+        messages.success(self.request, "Сохранение успешно!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
+        return super().form_invalid(form)
+
+
+class RealtyUpdateView(LoginRequiredMixin, UpdateView):
     model = Realty
     form_class = RealtyForm
 

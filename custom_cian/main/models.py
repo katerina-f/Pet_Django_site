@@ -2,11 +2,12 @@ from pytils import dt, translit
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 
 
 class Realty(models.Model):
 
-    name = models.CharField(verbose_name='Название', max_length=100)
+    name = models.CharField(verbose_name='Название', max_length=100, unique=True)
     price = models.IntegerField(verbose_name='Цена')
     space = models.IntegerField(verbose_name='Площадь')
     published_at = models.DateField(verbose_name='Дата публикации', auto_now_add=True)
@@ -25,8 +26,11 @@ class Realty(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("realty_detail", kwargs={"slug": self.slug})
+
     def save(self, *args, **kwargs):
-        self.slug = translit.slugify(f"{self.category} {self.name}")
+        self.slug = translit.slugify(f"{self.name}")
         super(Realty, self).save(*args, **kwargs)
 
     def published_at_ru(self):
