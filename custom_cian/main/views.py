@@ -4,6 +4,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import UpdateView
 
 from .models import Realty, Tag, Saller
+from .forms import SallerProfileForm
 
 
 def index(request):
@@ -38,4 +39,5 @@ class RealtyDetailView(DetailView):
 
 class SallerUpdateView(LoginRequiredMixin, UpdateView):
     model = Saller
-    fields = ["first_name", "last_name"]
+    template_name_suffix = '_update_form'
+    form_class = SallerProfileForm

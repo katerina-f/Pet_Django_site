@@ -6,7 +6,8 @@
 
 {% block content %}
 <h3> Изменение пользователя </h3>
-<form action="post" >
+<form method="post">
+    {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary mt-4">Submit</button>
 </form>
