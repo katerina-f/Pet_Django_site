@@ -18,5 +18,6 @@
             <p>Дата публикации: {{realty.published_at_ru}}</p>
         </div>
     </div>
+    <a class="button button-success" href="{% url 'update_realty' realty.slug %}">Обновить</a>
 
 {% endblock %}
