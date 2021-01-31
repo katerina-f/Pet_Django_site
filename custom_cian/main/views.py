@@ -47,6 +47,6 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, "Обновление успешно!")
         return super().form_valid(form)
 
-    def form_invalid(self):
+    def form_invalid(self, form):
         messages.error(self.request, "Обновление не удалось - проверьте правильность данных!")
-        return super().form_valid(form)
+        return super().form_invalid(form)
