@@ -4,6 +4,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from .models import Realty, Tag, Saller
+from .forms import RealtyForm
 
 
 def index(request):
@@ -43,4 +44,12 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):
     model = Realty
-    fields = "__all__"
+    form_class = RealtyForm
+
+    def form_valid(self, form):
+        messages.success(self.request, "Сохранение успешно!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
+        return super().form_invalid(form)
