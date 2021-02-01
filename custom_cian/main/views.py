@@ -1,17 +1,33 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from .models import Realty, Tag, Saller
-from .forms import RealtyForm, SallerProfileForm
+from .forms import RealtyForm, SallerProfileForm, RegistrationForm
 
 
 def index(request):
     turn_on_block = True
     params = {"turn_on_block": turn_on_block, "current_user": request.user}
     return render(request, "main/index.html", params)
+
+
+def registration(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Регистрация завершена успешно!")
+            return redirect("login")
+
+        else:
+            messages.error(request, "Ошибка регистрации!")
+    else:
+        form = RegistrationForm()
+    return render(request, 'registration/registration.html', {"form": form})
 
 
 class RealtyListView(ListView):
