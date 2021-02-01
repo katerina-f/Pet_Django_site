@@ -29,12 +29,12 @@
                 <ul class="dropdown-menu" aria-labelledby="dropdown01">
                     <li><a class="dropdown-item" href="{% url 'update_profile' user.pk %}">Изменить профиль</a></li>
                     <li><a class="dropdown-item" href="#">Мои объявления</a></li>
-                    <li><a class="dropdown-item" href="#">Выход</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
                 </ul>
                 {% else %}
                 <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-bs-toggle="dropdown" aria-expanded="false">Войти | Зарегистрироваться</a>
                 <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                    <li><a class="dropdown-item" href="#">Войти</a></li>
+                    <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
                     <li><a class="dropdown-item" href="#">Зарегистрироваться</a></li>
                 </ul>
                 {% endif %}
