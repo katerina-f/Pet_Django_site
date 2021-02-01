@@ -53,6 +53,9 @@ class Saller(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    def get_absolute_url(self):
+        return reverse("update_profile", kwargs={"pk": self.pk})
+
 
 class Category(models.Model):
 
