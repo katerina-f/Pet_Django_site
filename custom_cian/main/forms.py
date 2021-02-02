@@ -1,6 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from .models import Realty, Saller
@@ -24,10 +22,3 @@ class SallerProfileForm(forms.ModelForm):
         age = self.cleaned_data.get("age")
         if age < 18:
             raise ValidationError("Вы должны быть старше 18 лет!", code="invalid")
-
-
-class RegistrationForm(UserCreationForm):
-
-    class Meta:
-        model = User
-        fields = ["username", "password1", "password2"]

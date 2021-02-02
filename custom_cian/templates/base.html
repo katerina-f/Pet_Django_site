@@ -25,6 +25,19 @@
         </div>
         <div class="col">
           {% include 'main/components/header.html' with current_user=user %}
+          {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger" role="alert">
+                        {{message}}
+                    </div>
+                {% else %}
+                    <div class="alert alert-{{message.tags}}" role="alert">
+                        {{message}}
+                    </div>
+                {% endif %}
+            {% endfor %}
+          {% endif %}
           {% block content %} {% endblock %}
         </div>
         <div class="col-2">

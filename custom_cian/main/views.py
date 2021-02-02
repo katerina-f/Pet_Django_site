@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from .models import Realty, Tag, Saller
-from .forms import RealtyForm, SallerProfileForm, RegistrationForm
+from .forms import RealtyForm, SallerProfileForm
 
 
 def index(request):
@@ -14,24 +14,8 @@ def index(request):
     return render(request, "main/index.html", params)
 
 
-def registration(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Регистрация завершена успешно!")
-            return redirect("login")
-
-        else:
-            messages.error(request, "Ошибка регистрации!")
-    else:
-        form = RegistrationForm()
-    return render(request, 'registration/registration.html', {"form": form})
-
-
 class RealtyListView(ListView):
-    paginate_by = 1
+    paginate_by = 10
     model = Realty
 
     def get_context_data(self, **kwargs):
@@ -66,10 +50,6 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Обновление не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
-
-    def get_login_url(self):
-        print(self.login_url)
-        super().get_login_url()
 
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):
