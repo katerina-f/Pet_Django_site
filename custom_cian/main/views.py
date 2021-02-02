@@ -67,6 +67,10 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
         messages.error(self.request, "Обновление не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
 
+    def get_login_url(self):
+        print(self.login_url)
+        super().get_login_url()
+
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):
     model = Realty
