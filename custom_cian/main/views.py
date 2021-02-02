@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
@@ -63,7 +63,7 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
     def get_object(self):
-        return Saller.objects.get(created_by__pk=self.kwargs.get("slug"))
+        return get_object_or_404(Saller, created_by__pk=self.kwargs.get("slug"))
 
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):
