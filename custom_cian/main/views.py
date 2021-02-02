@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
+from allauth.account.views import SignupView
+
 from .models import Realty, Tag, Saller
 from .forms import RealtyForm, SallerProfileForm
 
@@ -12,6 +14,15 @@ def index(request):
     turn_on_block = True
     params = {"turn_on_block": turn_on_block, "current_user": request.user}
     return render(request, "main/index.html", params)
+
+
+class CustomSignupView(SignupView):
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        Saller.objects.create(first_name=self.username,
+                              created_by=self.user, email=self.user.email)
+        return response
 
 
 class RealtyListView(ListView):
@@ -50,6 +61,9 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Обновление не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
+
+    def get_object(self):
+        return Saller.objects.get(created_by__pk=self.kwargs.get("slug"))
 
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):

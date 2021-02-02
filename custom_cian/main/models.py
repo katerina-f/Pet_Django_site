@@ -54,7 +54,7 @@ class Saller(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     def get_absolute_url(self):
-        return reverse("update_profile", kwargs={"pk": self.pk})
+        return reverse("update_profile", kwargs={"slug": self.created_by.pk})
 
 
 class Category(models.Model):
