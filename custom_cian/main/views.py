@@ -6,8 +6,6 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from allauth.account.views import SignupView
-
 from .models import Realty, Tag, Saller
 from .forms import RealtyForm, SallerProfileForm
 
