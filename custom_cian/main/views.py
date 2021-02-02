@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib import messages
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
@@ -14,15 +16,6 @@ def index(request):
     turn_on_block = True
     params = {"turn_on_block": turn_on_block, "current_user": request.user}
     return render(request, "main/index.html", params)
-
-
-class CustomSignupView(SignupView):
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        Saller.objects.create(first_name=self.username,
-                              created_by=self.user, email=self.user.email)
-        return response
 
 
 class RealtyListView(ListView):
@@ -63,7 +56,13 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
     def get_object(self):
-        return get_object_or_404(Saller, created_by__pk=self.kwargs.get("slug"))
+        try:
+            user = User.objects.get(pk=self.kwargs.get("slug"))
+        except User.DoesNotExist:
+            raise Http404
+
+        saller, created = Saller.objects.get_or_create(created_by=user)
+        return saller
 
 
 class RealtyCreateView(LoginRequiredMixin, CreateView):
