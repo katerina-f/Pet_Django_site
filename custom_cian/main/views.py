@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib import messages
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
@@ -10,9 +12,22 @@ from .models import Realty, Tag, Saller
 from .forms import RealtyForm, SallerProfileForm
 
 
+def get_common_users_group():
+    common_users, created = Group.objects.get_or_create(name="common_users")
+    if created:
+        common_users.permissions.set(list(Permission.objects.filter(codename__icontains="saller").exclude(codename__startswith="delete")))
+    return common_users
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        instance.groups.add(get_common_users_group())
+
+
 def index(request):
     turn_on_block = True
-    params = {"turn_on_block": turn_on_block, "current_user": request.user}
+    params = {"turn_on_block": turn_on_block}
     return render(request, "main/index.html", params)
 
 
@@ -23,7 +38,6 @@ class RealtyListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tags"] = Tag.objects.all()
-        context["current_user"] = self.request.user
         context["current_tag"] = self.request.GET.get("tag") if self.request.GET.get("tag") else ""
         return context
 
@@ -40,7 +54,7 @@ class RealtyDetailView(DetailView):
     model = Realty
 
 
-class SallerUpdateView(LoginRequiredMixin, UpdateView):
+class SallerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Saller
     template_name_suffix = '_update_form'
     form_class = SallerProfileForm
@@ -60,7 +74,16 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
             raise Http404
 
         saller, created = Saller.objects.get_or_create(created_by=user)
+        if created:
+            saller.email = user.email
+            saller.first_name = user.first_name
+            saller.last_name = user.last_name
+            saller.save()
         return saller
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.created_by.groups.filter(name='common_users').exists() or obj.created_by.is_staff
 
 
 class RealtyCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
