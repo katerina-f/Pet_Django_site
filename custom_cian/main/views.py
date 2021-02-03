@@ -60,6 +60,7 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
             raise Http404
 
         saller, created = Saller.objects.get_or_create(created_by=user)
+        saller.email = user.email if not saller.email else saller.email
         return saller
 
 
