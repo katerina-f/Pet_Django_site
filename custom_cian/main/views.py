@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib import messages
