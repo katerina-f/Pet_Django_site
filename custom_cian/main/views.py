@@ -28,7 +28,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 def index(request):
     turn_on_block = True
-    params = {"turn_on_block": turn_on_block, "current_user": request.user}
+    params = {"turn_on_block": turn_on_block}
     return render(request, "main/index.html", params)
 
 
@@ -39,7 +39,6 @@ class RealtyListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["tags"] = Tag.objects.all()
-        context["current_user"] = self.request.user
         context["current_tag"] = self.request.GET.get("tag") if self.request.GET.get("tag") else ""
         return context
 
