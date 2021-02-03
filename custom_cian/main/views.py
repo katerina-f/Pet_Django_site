@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import Http404
@@ -63,7 +63,7 @@ class SallerUpdateView(LoginRequiredMixin, UpdateView):
         return saller
 
 
-class RealtyCreateView(LoginRequiredMixin, CreateView):
+class RealtyCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Realty
     form_class = RealtyForm
 
@@ -75,8 +75,12 @@ class RealtyCreateView(LoginRequiredMixin, CreateView):
         messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.created_by.groups.filter(name='sellers').exists()
 
-class RealtyUpdateView(LoginRequiredMixin, UpdateView):
+
+class RealtyUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Realty
     form_class = RealtyForm
 
@@ -87,3 +91,7 @@ class RealtyUpdateView(LoginRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.created_by.groups.filter(name='sellers').exists()
