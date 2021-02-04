@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib import messages
 from django.db.models.signals import post_save
@@ -86,9 +86,10 @@ class SallerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return obj.created_by.groups.filter(name='common_users').exists() or obj.created_by.is_staff
 
 
-class RealtyCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class RealtyCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Realty
     form_class = RealtyForm
+    permission_required = ("main.add_realty", "main.change_realty")
 
     def form_valid(self, form):
         messages.success(self.request, "Сохранение успешно!")
@@ -98,14 +99,11 @@ class RealtyCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
 
-    def test_func(self):
-        obj = self.get_object()
-        return obj.created_by.groups.filter(name='sellers').exists()
 
-
-class RealtyUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class RealtyUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Realty
     form_class = RealtyForm
+    permission_required = ("main.add_realty", "main.change_realty")
 
     def form_valid(self, form):
         messages.success(self.request, "Сохранение успешно!")
@@ -114,7 +112,3 @@ class RealtyUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
-
-    def test_func(self):
-        obj = self.get_object()
-        return obj.created_by.groups.filter(name='sellers').exists()
