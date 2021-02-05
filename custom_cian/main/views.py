@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib import messages
-from django.core.mail import EmailMultiAlternatives, mail_admins
+from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
