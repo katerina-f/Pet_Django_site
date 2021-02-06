@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib import messages
+from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
@@ -19,10 +21,20 @@ def get_common_users_group():
     return common_users
 
 
+def send_registration_email(user):
+    data = {"username": user.username, "site_name": "Custom Cian"}
+    html_body = render_to_string("main/email_templates/registration_email.html", data)
+    msg = EmailMultiAlternatives(subject="Регистрация на сайте", to=[user.email, ])
+    msg.attach_alternative(html_body, "text/html")
+    msg.send()
+
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(get_common_users_group())
+        if instance.email:
+            send_registration_email(instance)
 
 
 def index(request):
