@@ -112,7 +112,7 @@ class RealtyCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class RealtyUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class RealtyUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Realty
     form_class = RealtyForm
     permission_required = ("main.add_realty", "main.change_realty")
@@ -124,3 +124,6 @@ class RealtyUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def form_invalid(self, form):
         messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
+
+    def test_func(self):
+        return self.request.user.id == self.get_object().saller.created_by.id
