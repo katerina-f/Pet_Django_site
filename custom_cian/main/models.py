@@ -96,3 +96,10 @@ class Tag(models.Model):
 class Subscriber(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     novelty_subscribed = models.BooleanField(verbose_name="Подписка на новинки", default=False)
+
+    class Meta:
+        verbose_name = "Подписчик"
+        verbose_name_plural = "Подписчики"
+
+    def __str__(self):
+        return self.user.username

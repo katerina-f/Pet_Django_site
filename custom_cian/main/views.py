@@ -1,16 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from .models import Realty, Tag, Saller
+from .models import Realty, Tag, Saller, Subscriber
 from .forms import RealtyForm, SallerProfileForm
 
 
@@ -37,8 +39,20 @@ def create_user_profile(sender, instance, created, **kwargs):
                                        created_by=instance,
                                        first_name=instance.first_name,
                                        last_name=instance.last_name)
+        subscriber = Subscriber.objects.create(user=instance,
+                                               novelty_subscribed=False)
         if instance.email:
             send_registration_email(instance)
+
+@csrf_protect
+@login_required
+def subscribe_on_novelty(request):
+    if request.POST:
+        subscriber, created = Subscriber.objects.get_or_create(user=request.user)
+        subscriber.novelty_subscribed = True
+        subscriber.save()
+        messages.success(request, "Вы успешно подписались на новинки!")
+    return redirect('realty_list')
 
 
 def index(request):

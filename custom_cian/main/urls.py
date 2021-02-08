@@ -10,4 +10,5 @@ urlpatterns = [
     path('accounts/profile/<slug:slug>/', views.SallerUpdateView.as_view(), name="update_profile"),
     path('realty/add/', views.RealtyCreateView.as_view(), name="add_realty"),
     path('accounts/', include('allauth.urls')),
+    path('subscribe/', views.subscribe_on_novelty, name='subscribe')
 ]
