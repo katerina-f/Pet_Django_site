@@ -33,6 +33,10 @@ def send_registration_email(user):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(get_common_users_group())
+        saller = Saller.objects.create(email=instance.email,
+                                       created_by=instance,
+                                       first_name=instance.first_name,
+                                       last_name=instance.last_name)
         if instance.email:
             send_registration_email(instance)
 
