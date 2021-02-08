@@ -1,0 +1,7 @@
+<h1>Привет {{username}}!</h1>
+
+<h2>Вы получили это письмо, так как подписались на рассылку новинок от {{site_name}}!</h2>
+<h3>У нас появились новинки для вас:</h3>
+    {% for obj in new_objects %}
+        <p><a href="{{obj.get_absolute_url}}">{{obj.name}}: {{obj.price}}</a></p>
+    {% endfor %}
