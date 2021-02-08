@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def send_email_job():
-    subscribers = Subscriber.objects.all().select_related('user')
+    subscribers = [s.user for s in Subscriber.objects.all()]
     puplished_range = [datetime.now(), datetime.now() - timedelta(days=7)]
     new_realty = Realty.objects.filter(published_at__range=published_range)
     send_information_email(subscribers, "main/email_templates/weakly_novelty_email.html",
