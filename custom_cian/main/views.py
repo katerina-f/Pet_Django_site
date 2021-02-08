@@ -2,12 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, 
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
@@ -15,20 +13,14 @@ from django.views.generic.edit import CreateView, UpdateView
 from .models import Realty, Tag, Saller, Subscriber
 from .forms import RealtyForm, SallerProfileForm
 
+from.logic import send_information_email
+
 
 def get_common_users_group():
     common_users, created = Group.objects.get_or_create(name="common_users")
     if created:
         common_users.permissions.set(list(Permission.objects.filter(codename__icontains="saller").exclude(codename__startswith="delete")))
     return common_users
-
-
-def send_registration_email(user):
-    data = {"username": user.username, "site_name": "Custom Cian"}
-    html_body = render_to_string("main/email_templates/registration_email.html", data)
-    msg = EmailMultiAlternatives(subject="Регистрация на сайте", to=[user.email, ])
-    msg.attach_alternative(html_body, "text/html")
-    msg.send()
 
 
 @receiver(post_save, sender=User)
@@ -42,7 +34,19 @@ def create_user_profile(sender, instance, created, **kwargs):
         subscriber = Subscriber.objects.create(user=instance,
                                                novelty_subscribed=False)
         if instance.email:
-            send_registration_email(instance)
+            send_information_email([instance, ],
+                                   "main/email_templates/registration_email.html",
+                                   "Регистрация на сайте")
+
+
+@receiver(post_save, sender=Realty)
+def create_realty_object(sender, instance, created, **kwargs):
+    if created:
+        subscribers = [s.user for s in Subscriber.objects.all()]
+        send_information_email(subscribers, "main/email_templates/novelty_email.html",
+                                "Появилась новинка!", new_object_url=instance.get_absolute_url(),
+                                new_object_name=instance.name, new_object_price=instance.price)
+
 
 @csrf_protect
 @login_required
@@ -119,7 +123,7 @@ class SallerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class RealtyCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Realty
     form_class = RealtyForm
-    permission_required = ("main.add_realty", "main.change_realty")
+    permission_required = ("main.add_realty", )
 
     def form_valid(self, form):
         messages.success(self.request, "Сохранение успешно!")
@@ -133,7 +137,7 @@ class RealtyCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 class RealtyUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Realty
     form_class = RealtyForm
-    permission_required = ("main.add_realty", "main.change_realty")
+    permission_required = ("main.change_realty", )
 
     def form_valid(self, form):
         messages.success(self.request, "Сохранение успешно!")
