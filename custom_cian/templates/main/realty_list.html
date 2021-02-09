@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_tags %}
 
 {% block title %}
     Realty List
@@ -7,6 +8,12 @@
 {% block right_sidebar %}
     <h4 class="text-center">Тэги</h2>
     {% include 'main/components/tags_sidebar.html' with tags=tags %}
+    {% is_subscriber user as subscriber %}{% if user.is_authenticated and not subscriber.novelty_subscribed %}
+        <form action="{% url 'subscribe' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary mt-4">Подписаться на новинки</button>
+        </form>
+    {% endif %}
 {% endblock %}
 
 {% block content %}

@@ -91,3 +91,15 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         self.slug = translit.slugify(f"tag-{self.name}")
         super(Tag, self).save(*args, **kwargs)
+
+
+class Subscriber(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    novelty_subscribed = models.BooleanField(verbose_name="Подписка на новинки", default=False)
+
+    class Meta:
+        verbose_name = "Подписчик"
+        verbose_name_plural = "Подписчики"
+
+    def __str__(self):
+        return self.user.username
