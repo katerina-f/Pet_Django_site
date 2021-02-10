@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
 
+from custom_cian.celery import app
 from .logic import send_information_email
 from .models import Realty, Subscriber
 
 
+@app.task
 def send_weakly_novelty_email():
     subscribers = [{"username": s.user.username, "email": s.user.email}
                    for s in Subscriber.objects.all()]
