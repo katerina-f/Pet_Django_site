@@ -96,6 +96,16 @@ DATABASES = {
     }
 }
 
+#Caches
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://django:sOmE_sEcUrE_pAsS@0.0.0.0:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -165,8 +175,9 @@ STATIC_URL = '/static/'
 SITE_ID = 1
 
 # Celery settings
-BROKER_URL = 'redis://0.0.0.0:6379'
-CELERY_RESULT_BACKEND = 'redis://0.0.0.0:6379'
+CELERY_BROKER_URL = 'redis://django:sOmE_sEcUrE_pAsS@0.0.0.0:6379'
+CELERY_RESULT_BACKEND = 'redis://django:sOmE_sEcUrE_pAsS@0.0.0.0:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Moscow'
