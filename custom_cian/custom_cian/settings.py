@@ -163,3 +163,6 @@ STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = '/static/'
 
 SITE_ID = 1
+
+# Celery settings
+CELERY_TIMEZONE = 'Europe/Moscow'
