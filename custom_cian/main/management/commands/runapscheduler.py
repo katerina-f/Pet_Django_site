@@ -16,14 +16,6 @@ from main.logic import send_information_email
 logger = logging.getLogger(__name__)
 
 
-def send_email_job():
-    subscribers = [s.user for s in Subscriber.objects.all()]
-    puplished_range = [datetime.now(), datetime.now() - timedelta(days=7)]
-    new_realty = Realty.objects.filter(published_at__range=published_range)
-    send_information_email(subscribers, "main/email_templates/weakly_novelty_email.html",
-                           "Новинки недели!", new_objects=new_realty)
-
-
 def delete_old_job_executions(max_age=604_800):
     """This job deletes all apscheduler job executions older than `max_age` from the database."""
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
