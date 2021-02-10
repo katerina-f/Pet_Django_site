@@ -13,7 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .models import Realty, Tag, Saller, Subscriber
 from .forms import RealtyForm, SallerProfileForm
 
-from.logic import send_information_email
+from .tasks import send_email_task
 
 
 def get_common_users_group():
