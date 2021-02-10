@@ -1,7 +1,8 @@
-amqp==5.0.5
+amqp==1.4.9
+anyjson==0.3.3
 asgiref==3.3.1
-billiard==3.6.3.0
-celery==5.0.5
+billiard==3.3.0.23
+celery==3.1.26.post2
 certifi==2020.12.5
 cffi==1.14.4
 chardet==4.0.0
@@ -13,11 +14,12 @@ cryptography==3.3.1
 defusedxml==0.6.0
 Django==3.1.5
 django-allauth==0.44.0
+django-celery==3.3.1
 django-ckeditor==6.0.0
 django-js-asset==1.2.2
 django-redis==4.12.1
 idna==2.10
-kombu==5.0.2
+kombu==3.0.37
 oauthlib==3.1.0
 prompt-toolkit==3.0.14
 pycparser==2.20
