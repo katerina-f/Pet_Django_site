@@ -163,3 +163,10 @@ STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = '/static/'
 
 SITE_ID = 1
+
+# Celery settings
+BROKER_URL = 'redis://0.0.0.0:6379'
+CELERY_RESULT_BACKEND = 'redis://0.0.0.0:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
