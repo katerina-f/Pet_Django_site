@@ -6,3 +6,4 @@ __pycache__
 db.sqlite3
 custom_cian/static
 *.pyc
+celerybeat-schedule.db
