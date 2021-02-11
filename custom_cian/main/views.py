@@ -13,7 +13,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .models import Realty, Tag, Saller, Subscriber
 from .forms import RealtyForm, SallerProfileForm
 
-from.logic import send_information_email
+from .tasks import send_email_task
 
 
 def get_common_users_group():
@@ -42,10 +42,11 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Realty)
 def create_realty_object(sender, instance, created, **kwargs):
     if created:
-        subscribers = [s.user for s in Subscriber.objects.all()]
-        send_information_email(subscribers, "main/email_templates/novelty_email.html",
-                                "Появилась новинка!", new_object_url=instance.get_absolute_url(),
-                                new_object_name=instance.name, new_object_price=instance.price)
+        for s in Subscriber.objects.all():
+            send_email_task.delay({"username": s.user.username, "email": s.user.email},
+                                   "main/email_templates/novelty_email.html",
+                                   "Появилась новинка!", new_object_url=instance.get_absolute_url(),
+                                   new_object_name=instance.name, new_object_price=instance.price)
 
 
 @csrf_protect

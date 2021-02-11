@@ -1,8 +1,8 @@
-amqp==1.4.9
+amqp==5.0.5
 anyjson==0.3.3
 asgiref==3.3.1
-billiard==3.3.0.23
-celery==3.1.26.post2
+billiard==3.6.3.0
+celery==5.0.5
 certifi==2020.12.5
 cffi==1.14.4
 chardet==4.0.0
@@ -19,11 +19,12 @@ django-ckeditor==6.0.0
 django-js-asset==1.2.2
 django-redis==4.12.1
 idna==2.10
-kombu==3.0.37
+kombu==5.0.2
 oauthlib==3.1.0
 prompt-toolkit==3.0.14
 pycparser==2.20
 PyJWT==2.0.1
+python-decouple==3.4
 python3-openid==3.2.0
 pytils @ git+git://github.com/last-partizan/pytils.git@1c570a32b15e564bc68587b8207e32d464e61d08
 pytz==2020.5
