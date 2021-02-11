@@ -12,18 +12,21 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+from decouple import AutoConfig
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+config = AutoConfig(search_path=BASE_DIR.parent)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'szuejh#i9g_@iupf#=$1nwf0fnjnk=txlzuk*81(o&o&b)u0=+'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -100,7 +103,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://django:sOmE_sEcUrE_pAsS@0.0.0.0:6379/0",
+        "LOCATION": f"redis://:{config('REDIS_PASSWORD')}@0.0.0.0:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -174,9 +177,10 @@ STATIC_URL = '/static/'
 
 SITE_ID = 1
 
+
 # Celery settings
-CELERY_BROKER_URL = 'redis://django:sOmE_sEcUrE_pAsS@0.0.0.0:6379'
-CELERY_RESULT_BACKEND = 'redis://django:sOmE_sEcUrE_pAsS@0.0.0.0:6379'
+CELERY_BROKER_URL = f'redis://:{config("REDIS_PASSWORD")}@0.0.0.0:6379'
+CELERY_RESULT_BACKEND = f'redis://:{config("REDIS_PASSWORD")}@0.0.0.0:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
