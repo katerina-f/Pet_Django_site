@@ -10,6 +10,7 @@ def send_weakly_novelty_email():
     published_range = [datetime.now() - timedelta(days=7), datetime.now()]
     new_realty = Realty.objects.filter(published_at__range=published_range)
     for s in Subscriber.objects.all():
+        print(s)
         send_information_email({"username": s.user.username, "email": s.user.email},
                                 "main/email_templates/weakly_novelty_email.html",
                                 "Новинки недели!", new_objects=new_realty)
