@@ -24,6 +24,7 @@ oauthlib==3.1.0
 prompt-toolkit==3.0.14
 pycparser==2.20
 PyJWT==2.0.1
+python-decouple==3.4
 python3-openid==3.2.0
 pytils @ git+git://github.com/last-partizan/pytils.git@1c570a32b15e564bc68587b8207e32d464e61d08
 pytz==2020.5
