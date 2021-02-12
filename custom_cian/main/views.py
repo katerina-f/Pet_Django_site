@@ -6,6 +6,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
@@ -85,6 +87,7 @@ class RealtyListView(ListView):
         return queryset
 
 
+@method_decorator(cache_page(60 * 5), name='dispatch')
 class RealtyDetailView(DetailView):
     model = Realty
 
