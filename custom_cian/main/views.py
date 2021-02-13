@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, 
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
@@ -87,9 +88,16 @@ class RealtyListView(ListView):
         return queryset
 
 
-@method_decorator(cache_page(60 * 5), name='dispatch')
 class RealtyDetailView(DetailView):
     model = Realty
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        cache.get_or_set(f'{context["object"].pk}_counter', 0, 60)
+        cache.incr(f'{context["object"].pk}_counter')
+        context["counter"] = cache.get(f'{context["object"].pk}_counter')
+        return context
 
 
 class SallerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
