@@ -17,6 +17,7 @@ class Realty(models.Model):
     saller = models.ForeignKey('Saller', on_delete=models.CASCADE)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100, null=True)
     is_mortgage_available = models.BooleanField(verbose_name="Возможность ипотеки", blank=False)
+    counter = models.IntegerField(verbose_name="Количество просмотров", default=0)
 
     class Meta:
         verbose_name = "Объект недвижимости"

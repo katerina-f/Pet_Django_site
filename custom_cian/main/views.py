@@ -93,10 +93,15 @@ class RealtyDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.object.counter += 1
+        self.object.save()
 
-        cache.get_or_set(f'{context["object"].pk}_counter', 0, 60)
-        cache.incr(f'{context["object"].pk}_counter')
-        context["counter"] = cache.get(f'{context["object"].pk}_counter')
+        counter = cache.get(f"{self.object.pk}_counter")
+        if counter is None:
+            counter = self.object.counter
+            cache.set(f'{self.object.pk}_counter', counter, 60)
+
+        context["counter"] = counter
         return context
 
 
