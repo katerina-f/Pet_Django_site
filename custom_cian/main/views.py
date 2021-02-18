@@ -96,11 +96,7 @@ class RealtyDetailView(DetailView):
         self.object.counter += 1
         self.object.save()
 
-        counter = cache.get(f"{self.object.pk}_counter")
-        if counter is None:
-            counter = self.object.counter
-            cache.set(f'{self.object.pk}_counter', counter, 60)
-
+        counter = cache.get_or_set(f"{self.object.pk}_counter", self.object.counter, 60)
         context["counter"] = counter
         return context
 
