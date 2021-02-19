@@ -34,5 +34,7 @@ class TestRealtyBehavior(TestCase):
 
     def test_get_realty(self):
         get = self.factory.get("/realty/")
-        response = RealtyDetailView.as_view().get(get, pk=1)
+        get.user = self.user
+        response = RealtyDetailView.as_view()(get, pk=1)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context_data["object"], self.realty)
