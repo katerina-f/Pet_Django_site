@@ -1,4 +1,4 @@
-from main.models import Realty, Saller, Tag
+from main.models import Category, Realty, Saller
 
 # продавцы
 saller_1 = Saller(first_name="Иван", last_name="Иванов")
@@ -14,16 +14,16 @@ storage = Category.objects.get(name="Склад")
 
 # недвижимость
 realty_1 = Realty.objects.create(name="Двухкомнатная квартира с видом на парк",
-                               price=12000000, space=75,
-                               description="Просторная квартира с окнами выходящими в парк, \
-                                   в пешей доступности метро, торговые центры",
-                               category=flat, saller=saller_1)
+                                 price=12000000, space=75,
+                                 description="Просторная квартира с окнами выходящими в парк, \
+                                              в пешей доступности метро, торговые центры",
+                                 category=flat, saller=saller_1)
 
 realty_2 = Realty.objects.create(name="Большая однушка у метро",
-                               price=9000000, space=56,
-                               description="Просторная однокомнатная квартира \
-                                   с раздельным санузлом, напротив метро",
-                               category=flat, saller=saller_1)
+                                 price=9000000, space=56,
+                                 description="Просторная однокомнатная квартира \
+                                              с раздельным санузлом, напротив метро",
+                                 category=flat, saller=saller_1)
 
 realty_3 = Realty(name="Большой гараж у ЖК", price=1000000, space=50,
                   description="Большой гараж во дворе жилого комплекса \

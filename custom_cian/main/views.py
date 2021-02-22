@@ -1,4 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, \
+                                       UserPassesTestMixin, \
+                                       PermissionRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -6,9 +8,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import Http404
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
@@ -22,7 +22,12 @@ from .tasks import send_email_task
 def get_common_users_group():
     common_users, created = Group.objects.get_or_create(name="common_users")
     if created:
-        common_users.permissions.set(list(Permission.objects.filter(codename__icontains="saller").exclude(codename__startswith="delete")))
+        common_users.permissions.set(
+            list(
+                Permission.objects.filter(codename__icontains="saller").
+                exclude(codename__startswith="delete")
+                )
+        )
     return common_users
 
 
@@ -30,16 +35,16 @@ def get_common_users_group():
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(get_common_users_group())
-        saller = Saller.objects.create(email=instance.email,
-                                       created_by=instance,
-                                       first_name=instance.first_name,
-                                       last_name=instance.last_name)
-        subscriber = Subscriber.objects.create(user=instance,
-                                               novelty_subscribed=False)
+        Saller.objects.create(email=instance.email,
+                              created_by=instance,
+                              first_name=instance.first_name,
+                              last_name=instance.last_name)
+        Subscriber.objects.create(user=instance,
+                                  novelty_subscribed=False)
         if instance.email:
-            send_information_email([instance, ],
-                                   "main/email_templates/registration_email.html",
-                                   "Регистрация на сайте")
+            send_email_task([instance, ],
+                            "main/email_templates/registration_email.html",
+                            "Регистрация на сайте")
 
 
 @receiver(post_save, sender=Realty)
@@ -47,9 +52,9 @@ def create_realty_object(sender, instance, created, **kwargs):
     if created:
         for s in Subscriber.objects.all():
             send_email_task.delay({"username": s.user.username, "email": s.user.email},
-                                   "main/email_templates/novelty_email.html",
-                                   "Появилась новинка!", new_object_url=instance.get_absolute_url(),
-                                   new_object_name=instance.name, new_object_price=instance.price)
+                                  "main/email_templates/novelty_email.html",
+                                  "Появилась новинка!", new_object_url=instance.get_absolute_url(),
+                                  new_object_name=instance.name, new_object_price=instance.price)
 
 
 @csrf_protect
@@ -143,11 +148,15 @@ class RealtyCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "Сохранение не удалось - проверьте правильность данных!")
+        messages.error(self.request,
+                       "Сохранение не удалось - проверьте правильность данных!")
         return super().form_invalid(form)
 
 
-class RealtyUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
+class RealtyUpdateView(LoginRequiredMixin,
+                       PermissionRequiredMixin,
+                       UserPassesTestMixin,
+                       UpdateView):
     model = Realty
     form_class = RealtyForm
     permission_required = ("main.change_realty", )
