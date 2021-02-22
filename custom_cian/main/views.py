@@ -130,7 +130,8 @@ class SallerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         obj = self.get_object()
-        return obj.created_by.groups.filter(name='common_users').exists() or obj.created_by.is_staff
+        return (obj.created_by.groups.filter(name='common_users').exists() or \
+            obj.created_by.is_staff) and obj.created_by.pk == self.request.user.pk
 
 
 class RealtyCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
