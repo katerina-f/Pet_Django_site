@@ -6,6 +6,22 @@ from django.urls import reverse
 
 
 class Realty(models.Model):
+    """
+    Класс, описывающий модель объекта недвижимости
+    :param name: Название объекта
+    :param price: Цена объекта
+    :param space: Площадь объекта
+    :param published_at: Дата публикации (заполняется автоматически при создании)
+    :param description: Детальное описание объекта
+    :param tags: Тэги для объекта
+    :param category: Категория, к которой относится объект
+    :param saller: Продавец, создающий объект
+    :param slug: Репрезентация части url адреса для объекта
+                 (заполняется автоматически при создании)
+    :param is_mortgage_available: Доступность ипотеки
+    :param counter: Счетчик просмотров объекта
+                    (заполняется автоматически)
+    """
 
     name = models.CharField(verbose_name='Название', max_length=100, unique=True)
     price = models.IntegerField(verbose_name='Цена')
@@ -35,11 +51,19 @@ class Realty(models.Model):
         super(Realty, self).save(*args, **kwargs)
 
     def published_at_ru(self):
+        """ Метод для перевода даты публикации в русскоязычный формат """
         return dt.ru_strftime(u"%d %B %Y", self.published_at, inflected=True)
 
 
 class Saller(models.Model):
-
+    """
+    Класс, описывающий модель продавца
+    :param first_name: Имя продавца
+    :param last_name: Фамилия продавца
+    :param registered_at: Дата регистрации (заполняется автоматически при создании)
+    :param created_by: объект пользователя (User), который создал профиль
+    :param email: email адрес продавца
+    """
     first_name = models.CharField(verbose_name="Имя", max_length=50)
     last_name = models.CharField(verbose_name="Фамилия", max_length=50)
     registered_at = models.DateField(verbose_name="Дата регистрации", auto_now_add=True)
@@ -59,6 +83,12 @@ class Saller(models.Model):
 
 
 class Category(models.Model):
+    """
+    Класс, описывающий категорию объектов недвижимости
+    :param name: Название категории
+    :param slug: Репрезентация части url адреса для категории
+                 (заполняется автоматически при создании)
+    """
 
     name = models.CharField(verbose_name='Название', max_length=100, unique=True)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100, unique=True, editable=False)
@@ -77,6 +107,13 @@ class Category(models.Model):
 
 
 class Tag(models.Model):
+    """
+    Класс, описывающий тэг объектов недвижимости
+    :param name: Название категории
+    :param slug: Репрезентация части url адреса для категории
+                 (заполняется автоматически при создании)
+    :param realty_list: Список привязанных к тэгу объектов недвижимости
+    """
     name = models.CharField(verbose_name='Название', max_length=100, unique=True)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100, unique=True, editable=False)
     realty_list = models.ManyToManyField(Realty, related_name="realty_list")
@@ -95,6 +132,11 @@ class Tag(models.Model):
 
 
 class Subscriber(models.Model):
+    """
+    Класс, описывающий модель подписчика - связан с пользователем сайта
+    :param user: объект пользователя (User), который создал профиль
+    :param novelty_subscribed: Подписан ли пользователь на новинки
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     novelty_subscribed = models.BooleanField(verbose_name="Подписка на новинки", default=False)
 
