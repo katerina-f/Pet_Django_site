@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'django_celery_beat',
+
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -185,3 +187,16 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Moscow'
+
+# Channels settings
+
+ASGI_APPLICATION = "custom_cian.routing.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@0.0.0.0)', 6379), ],
+            "symmetric_encryption_keys": [SECRET_KEY],
+        },
+    },
+}
