@@ -8,6 +8,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     def connect(self):
         super().connect()
         self.user = self.scope["user"]
+        self.send_json({"message": "[Welcome %s!]" % self.user})
 
     def receive_json(self, data: dict) -> None:
         message: str = data['message']
