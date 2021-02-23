@@ -5,7 +5,7 @@ from django.db import models
 
 from ckeditor.widgets import CKEditorWidget
 
-from .models import *
+from .models import Category, Saller, Realty, Tag, Subscriber
 
 
 class FlatPageAdmin(FlatPageAdmin):
