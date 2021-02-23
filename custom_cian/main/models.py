@@ -40,17 +40,17 @@ class Realty(models.Model):
         verbose_name_plural = "Объекты недвижимости"
         ordering = ["-published_at"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse("realty_detail", kwargs={"slug": self.slug})
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.slug = translit.slugify(f"{self.name}")
         super(Realty, self).save(*args, **kwargs)
 
-    def published_at_ru(self):
+    def published_at_ru(self) -> str:
         """ Метод для перевода даты публикации в русскоязычный формат """
         return dt.ru_strftime(u"%d %B %Y", self.published_at, inflected=True)
 
@@ -75,10 +75,10 @@ class Saller(models.Model):
         verbose_name_plural = "Продавцы"
         ordering = ["last_name", "first_name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return reverse("update_profile", kwargs={"slug": self.created_by.pk})
 
 
@@ -98,10 +98,10 @@ class Category(models.Model):
         verbose_name_plural = "Категории"
         ordering = ["name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.slug = translit.slugify(f"category-{self.name}")
         super(Category, self).save(*args, **kwargs)
 
@@ -123,10 +123,10 @@ class Tag(models.Model):
         verbose_name_plural = "Тэги"
         ordering = ["name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.slug = translit.slugify(f"tag-{self.name}")
         super(Tag, self).save(*args, **kwargs)
 
@@ -144,5 +144,5 @@ class Subscriber(models.Model):
         verbose_name = "Подписчик"
         verbose_name_plural = "Подписчики"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.username
