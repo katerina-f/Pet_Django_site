@@ -1,5 +1,5 @@
 from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives, get_connection
+from django.core.mail import EmailMultiAlternatives
 
 
 def send_information_email(rec, template_name, subject, **kwargs):

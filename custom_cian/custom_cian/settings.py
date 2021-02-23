@@ -99,7 +99,7 @@ DATABASES = {
     }
 }
 
-#Caches
+# Caches
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
