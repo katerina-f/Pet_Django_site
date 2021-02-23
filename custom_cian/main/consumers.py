@@ -5,6 +5,9 @@ from .models import Realty
 
 class ChatConsumer(JsonWebsocketConsumer):
     """Consumer for work with json messages in chat"""
+    def connect(self):
+        super().connect()
+        self.user = self.scope["user"]
 
     def receive_json(self, data: dict) -> None:
         message: str = data['message']
