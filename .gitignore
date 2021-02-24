@@ -11,3 +11,4 @@ redis-data/
 .env
 .pytest_cache
 .mypy_cache
+custom_cian/docs/build
