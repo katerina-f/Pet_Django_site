@@ -43,6 +43,8 @@ def get_common_users_group() -> Group:
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender: User, instance: User, created: bool, **kwargs) -> None:
+    if kwargs['raw']:
+        return
     if created:
         instance.groups.add(get_common_users_group())
         Saller.objects.create(email=instance.email,
@@ -59,6 +61,8 @@ def create_user_profile(sender: User, instance: User, created: bool, **kwargs) -
 
 @receiver(post_save, sender=Realty)
 def create_realty_object(sender: Realty, instance: Realty, created: bool, **kwargs) -> None:
+    if kwargs['raw']:
+        return
     if created:
         for s in Subscriber.objects.all():
             send_email_task.delay({"username": s.user.username, "email": s.user.email},

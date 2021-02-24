@@ -1,0 +1,59 @@
+[
+    {
+        "model": "main.realty",
+        "pk": 3,
+        "fields": {
+            "name": "гараж в охраняемом кооперативе",
+            "price": 600000,
+            "space": 20,
+            "published_at": "2021-01-25",
+            "description": "Гараж типичной планировки в гаражном кооперативе",
+            "category": 5,
+            "saller": 3,
+            "slug": "garazh-v-ohranyaemom-kooperative",
+            "is_mortgage_available": false,
+            "counter": 20,
+            "tags": [
+                2
+            ]
+        }
+    },
+    {
+        "model": "main.realty",
+        "pk": 8,
+        "fields": {
+            "name": "офис",
+            "price": 800000,
+            "space": 60,
+            "published_at": "2021-02-01",
+            "description": "офис",
+            "category": 4,
+            "saller": 3,
+            "slug": "ofis",
+            "is_mortgage_available": true,
+            "counter": 15,
+            "tags": [
+                3
+            ]
+        }
+    },
+    {
+        "model": "main.realty",
+        "pk": 9,
+        "fields": {
+            "name": "Квартира очень большая",
+            "price": 78,
+            "space": 888,
+            "published_at": "2021-02-11",
+            "description": "6кн7луш снт",
+            "category": 1,
+            "saller": 3,
+            "slug": "kvartira-ochen-bolshaya",
+            "is_mortgage_available": false,
+            "counter": 17,
+            "tags": [
+                1
+            ]
+        }
+    }
+]

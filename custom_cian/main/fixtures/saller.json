@@ -1,0 +1,13 @@
+[
+    {
+        "model": "main.saller",
+        "pk": 3,
+        "fields": {
+            "first_name": "Петр",
+            "last_name": "Петров",
+            "registered_at": "2021-01-25",
+            "created_by": 1,
+            "email": "ekaterina.frolova40@gmail.com"
+        }
+    }
+]

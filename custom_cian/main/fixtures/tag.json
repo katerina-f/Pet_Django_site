@@ -1,0 +1,49 @@
+[
+    {
+        "model": "main.tag",
+        "pk": 1,
+        "fields": {
+            "name": "квартиры",
+            "slug": "tag-kvartiryi",
+            "realty_list": []
+        }
+    },
+    {
+        "model": "main.tag",
+        "pk": 2,
+        "fields": {
+            "name": "гаражи",
+            "slug": "tag-garazhi",
+            "realty_list": [
+                3
+            ]
+        }
+    },
+    {
+        "model": "main.tag",
+        "pk": 3,
+        "fields": {
+            "name": "у метро",
+            "slug": "tag-u-metro",
+            "realty_list": []
+        }
+    },
+    {
+        "model": "main.tag",
+        "pk": 4,
+        "fields": {
+            "name": "большая",
+            "slug": "tag-bolshaya",
+            "realty_list": []
+        }
+    },
+    {
+        "model": "main.tag",
+        "pk": 5,
+        "fields": {
+            "name": "светлая",
+            "slug": "tag-svetlaya",
+            "realty_list": []
+        }
+    }
+]

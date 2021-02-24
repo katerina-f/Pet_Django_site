@@ -1,0 +1,10 @@
+[
+    {
+        "model": "main.subscriber",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "novelty_subscribed": true
+        }
+    }
+]
