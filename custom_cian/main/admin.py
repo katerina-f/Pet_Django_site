@@ -14,12 +14,17 @@ class FlatPageAdmin(FlatPageAdmin):
     }
 
 
+class RealtyAdmin(admin.ModelAdmin):
+    ordering = ("-published_at", "tags")
+
+
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 admin.site.register(Category)
+admin.site.register(Realty, RealtyAdmin)
 
 # временно зарегистрированы для удобства добавления
-admin.site.register(Realty)
+
 admin.site.register(Saller)
 admin.site.register(Tag)
 admin.site.register(Subscriber)
