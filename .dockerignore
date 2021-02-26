@@ -1,8 +1,0 @@
-.idea/
-.vscode/
-
-__pycache__
-env/
-
-*.log
-.env
