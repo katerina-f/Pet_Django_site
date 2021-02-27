@@ -4,6 +4,7 @@ env/
 .idea/
 __pycache__
 db.sqlite3
+testdb.sqlite3
 custom_cian/static
 *.pyc
 celerybeat-schedule

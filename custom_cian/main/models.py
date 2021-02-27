@@ -34,6 +34,7 @@ class Realty(models.Model):
     slug = models.SlugField(verbose_name='Ссылка', max_length=100, null=True)
     is_mortgage_available = models.BooleanField(verbose_name="Возможность ипотеки", blank=False)
     counter = models.IntegerField(verbose_name="Количество просмотров", default=0)
+    in_archive = models.BooleanField(verbose_name="В архиве", default=False)
 
     class Meta:
         verbose_name = "Объект недвижимости"

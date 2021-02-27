@@ -105,6 +105,7 @@ class RealtyListView(ListView):
         if tag_name := self.request.GET.get("tag"):
             queryset = Realty.objects.filter(tags__name=tag_name)
 
+        queryset = queryset.filter(in_archive=False)
         return queryset
 
 
