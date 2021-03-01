@@ -10,7 +10,8 @@ custom_cian/static
 celerybeat-schedule
 redis-data/
 web/
-.env
+.env.prod
+.env.dev
 .pytest_cache
 .mypy_cache
 custom_cian/docs/build
