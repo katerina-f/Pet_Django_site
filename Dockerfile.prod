@@ -1,0 +1,40 @@
+###########
+# BUILDER #
+###########
+FROM python:3.8.3-alpine as builder
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+RUN apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev libressl-dev libffi-dev
+RUN pip install --upgrade pip
+COPY ./requirements.txt /requirements.txt
+RUN mkdir /usr/src/custom_cian
+COPY ./custom_cian /usr/src/custom_cian
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/custom_cian/wheels -r requirements.txt
+WORKDIR /usr/src/custom_cian
+
+#########
+# FINAL #
+#########
+# pull official base image
+FROM python:3.8.3-alpine
+# create directory for the app user
+RUN mkdir -p /home/custom_cian
+# create the app user
+RUN addgroup -S custom_cian && adduser -S custom_cian -G custom_cian
+# create the appropriate directories
+ENV HOME=/home/custom_cian
+ENV APP_HOME=/home/custom_cian/web
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
+# install dependencies
+RUN apk update && apk add libpq
+COPY --from=builder /usr/src/custom_cian/wheels /wheels
+COPY --from=builder ./requirements.txt .
+RUN pip install --no-cache /wheels/*
+# copy project
+COPY . $APP_HOME
+# chown all the files to the app user
+RUN chown -R custom_cian:custom_cian $APP_HOME
+# change to the app user
+USER custom_cian

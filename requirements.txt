@@ -33,6 +33,7 @@ django-stubs==1.7.0
 django-timezone-field==4.1.1
 docutils==0.16
 flake8==3.8.4
+gunicorn==20.0.4
 hiredis==1.1.0
 hyperlink==21.0.0
 idna==2.10

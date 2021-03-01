@@ -10,15 +10,14 @@ services:
   redis:
     container_name: redis_custom_cian
     image: redis:alpine
-    command: redis-server --requirepass ${REDIS_PASSWORD}
+    env_file:
+    - ./.env.prod
+    command: redis-server --requirepass dsucfhuiBDEFUGIE
     ports:
         - 6379:6379
     volumes:
         - redis_custom_cian:/var/lib/redis
         - ${PWD}/conf/redis.conf:/usr/local/etc/redis/redis.conf
-    environment:
-        - REDIS_REPLICATION_MODE=${REDIS_REPLICATION_MODE}
-        - TZ=${TZ}
 
   database:
     container_name: postgres_custom_cian
@@ -28,23 +27,23 @@ services:
     volumes:
       - postgres_custom_cian:/var/lib/postgresql/data
     env_file:
-      - ./.env.dev
+      - ./.env.prod
 
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     volumes:
       - ./custom_cian:/usr/src/custom_cian/
     command: >
       sh -c "python manage.py migrate &&
              python manage.py wait_for_db &&
              python manage.py loaddata *.json &&
-             python manage.py runserver 0.0.0.0:8000"
+             gunicorn custom_cian.wsgi:application --bind 0.0.0.0:8000"
     ports:
       - 8000:8000
     env_file:
-      - ./.env.dev
+      - ./.env.prod
     depends_on:
       - database
       - redis
@@ -60,8 +59,13 @@ services:
     volumes:
       - ./custom_cian:/usr/src/custom_cian
     env_file:
-      - ./.env.dev
+      - ./.env.prod
     depends_on:
-      - database
-      - redis
+      - web
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
       - web
