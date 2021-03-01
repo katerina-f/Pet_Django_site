@@ -8,5 +8,5 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
 RUN mkdir /usr/src/custom_cian
-COPY ./custom_cian /usr/src/custom_cian
+COPY . /usr/src/custom_cian
 WORKDIR /usr/src/custom_cian

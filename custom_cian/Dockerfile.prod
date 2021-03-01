@@ -9,7 +9,7 @@ RUN apk update \
 RUN pip install --upgrade pip
 COPY ./requirements.txt /requirements.txt
 RUN mkdir /usr/src/custom_cian
-COPY ./custom_cian /usr/src/custom_cian
+COPY . /usr/src/custom_cian
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/custom_cian/wheels -r requirements.txt
 WORKDIR /usr/src/custom_cian
 
@@ -26,6 +26,7 @@ RUN addgroup -S custom_cian && adduser -S custom_cian -G custom_cian
 ENV HOME=/home/custom_cian
 ENV APP_HOME=/home/custom_cian/web
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
 WORKDIR $APP_HOME
 # install dependencies
 RUN apk update && apk add libpq
