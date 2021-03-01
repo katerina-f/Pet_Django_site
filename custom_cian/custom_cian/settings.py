@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]
 
 
 # Application definition
@@ -109,7 +109,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://:{config('REDIS_PASSWORD')}@0.0.0.0:6379/0",
+        "LOCATION": f"redis://:{config('REDIS_PASSWORD')}@redis:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -185,8 +185,8 @@ SITE_ID = 1
 
 
 # Celery settings
-CELERY_BROKER_URL = f'redis://:{config("REDIS_PASSWORD")}@0.0.0.0:6379'
-CELERY_RESULT_BACKEND = f'redis://:{config("REDIS_PASSWORD")}@0.0.0.0:6379'
+CELERY_BROKER_URL = f'redis://:{config("REDIS_PASSWORD")}@redis:6379'
+CELERY_RESULT_BACKEND = f'redis://:{config("REDIS_PASSWORD")}@redis:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -195,12 +195,12 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 # Channels settings
 
 ASGI_APPLICATION = "custom_cian.routing.application"
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@0.0.0.0)', 6379), ],
-#             "symmetric_encryption_keys": [SECRET_KEY],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@redis', 6379), ],
+            "symmetric_encryption_keys": [SECRET_KEY],
+        },
+    },
+}
