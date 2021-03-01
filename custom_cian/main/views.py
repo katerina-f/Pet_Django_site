@@ -64,6 +64,8 @@ def create_realty_object(sender: Realty, instance: Realty, created: bool, **kwar
     if kwargs['raw']:
         return
     if created:
+        for tag in instance.tags:
+            tag, created = Tag.objects.get_or_create(name=tag)
         for s in Subscriber.objects.all():
             send_email_task.delay({"username": s.user.username, "email": s.user.email},
                                   "main/email_templates/novelty_email.html",
