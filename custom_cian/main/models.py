@@ -1,6 +1,7 @@
 from pytils import dt, translit
 
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.urls import reverse
 
@@ -117,7 +118,6 @@ class Tag(models.Model):
     """
     name = models.CharField(verbose_name='Название', max_length=100, unique=True)
     slug = models.SlugField(verbose_name='Ссылка', max_length=100, unique=True, editable=False)
-    realty_list = models.ManyToManyField(Realty, related_name="realty_list")
 
     class Meta:
         verbose_name = "Тэг"
