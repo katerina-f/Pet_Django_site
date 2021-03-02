@@ -97,15 +97,15 @@ class SearchListView(ListView):
     model: Type[Model] = Realty
     template_name = "main/search_result.html"
 
-    def get_context_data(self, **kwargs) -> dict:
-        context = super().get_context_data(**kwargs)
-        context["tags"] = Tag.objects.all()
-        context["current_tag"] = self.request.GET.get("tag") if self.request.GET.get("tag") else ""
-        return context
-
     def get_queryset(self) -> QuerySet:
         queryset = super().get_queryset()
-        query = self.request.GET
+        query = self.request.GET.get("query")
+        if query:
+            vector = SearchVector('name', 'description')
+            search_query = SearchQuery(query)
+            queryset = Realty.objects.annotate(
+                        rank=SearchRank(vector, search_query)
+                        ).filter(rank__gte=0.001).order_by('-rank')
         return queryset
 
 

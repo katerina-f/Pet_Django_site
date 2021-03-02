@@ -22,7 +22,3 @@ class SallerProfileForm(forms.ModelForm):
         age = self.cleaned_data.get("age")
         if age < 18:
             raise ValidationError("Вы должны быть старше 18 лет!", code="invalid")
-
-
-class SearchForm(forms.Form):
-    query = forms.CharField()

@@ -4,7 +4,6 @@ from django.contrib.auth.models import AnonymousUser
 from datetime import datetime
 
 from main.models import Saller, Subscriber
-from main.forms import SearchForm
 
 
 register = template.Library()
@@ -35,8 +34,3 @@ def is_subscriber(user):
         return Subscriber.objects.get(user=user)
     except Subscriber.DoesNotExist:
         return
-
-
-@register.simple_tag
-def search_form():
-    return SearchForm()

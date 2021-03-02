@@ -18,9 +18,8 @@
                 </li>
             {% endif %}
         </ul>
-        {% search_form %}
-        <form class="d-flex" action="{% url 'search' %}" method="get">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" action="{% url 'search' %}" method="GET">
+            <input class="form-control me-2" placeholder="Search" aria-label="Search" name="query" value="{{request.GET.query}}"">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <ul class="navbar-nav ml-2">
