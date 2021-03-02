@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, \
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.cache import cache
 from django.views.generic.edit import ModelFormMixin
 from django.db.models.signals import post_save
@@ -89,6 +90,23 @@ def index(request: HttpRequest) -> HttpResponse:
     turn_on_block = True
     params = {"turn_on_block": turn_on_block}
     return render(request, "main/index.html", params)
+
+
+class SearchListView(ListView):
+    paginate_by: int = 10
+    model: Type[Model] = Realty
+    template_name = "main/search_result.html"
+
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        context["tags"] = Tag.objects.all()
+        context["current_tag"] = self.request.GET.get("tag") if self.request.GET.get("tag") else ""
+        return context
+
+    def get_queryset(self) -> QuerySet:
+        queryset = super().get_queryset()
+        query = self.request.GET
+        return queryset
 
 
 class RealtyListView(ListView):

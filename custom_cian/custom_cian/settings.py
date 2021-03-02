@@ -54,7 +54,9 @@ INSTALLED_APPS = [
 
     'django_celery_beat',
 
-    'channels'
+    'channels',
+
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -195,12 +197,12 @@ CELERY_TIMEZONE = 'Europe/Moscow'
 # Channels settings
 
 ASGI_APPLICATION = "custom_cian.routing.application"
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@redis', 6379), ],
-#             "symmetric_encryption_keys": [config("SECRET_KEY")],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@redis', 6379), ],
+            "symmetric_encryption_keys": [config("SECRET_KEY")],
+        },
+    },
+}
