@@ -33,6 +33,7 @@ django-stubs==1.7.0
 django-timezone-field==4.1.1
 docutils==0.16
 flake8==3.8.4
+gunicorn==20.0.4
 hiredis==1.1.0
 hyperlink==21.0.0
 idna==2.10
@@ -50,6 +51,7 @@ oauthlib==3.1.0
 packaging==20.9
 pluggy==0.13.1
 prompt-toolkit==3.0.14
+psycopg2-binary==2.8.6
 py==1.10.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -67,7 +69,7 @@ python-crontab==2.5.1
 python-dateutil==2.8.1
 python-decouple==3.4
 python3-openid==3.2.0
-pytils @ git+git://github.com/last-partizan/pytils.git@1c570a32b15e564bc68587b8207e32d464e61d08
+pytils==0.3
 pytz==2020.5
 redis==3.5.3
 requests==2.25.1
