@@ -55,7 +55,7 @@ def create_user_profile(sender: User, instance: User, created: bool, **kwargs) -
         Subscriber.objects.create(user=instance,
                                   novelty_subscribed=False)
         if instance.email:
-            send_email_task([instance, ],
+            send_email_task({"username": instance.username, "email": instance.email},
                             "main/email_templates/registration_email.html",
                             "Регистрация на сайте")
 
@@ -126,6 +126,17 @@ class RealtyListView(ListView):
             queryset = Realty.objects.filter(tags__contains=[tag_name])
 
         queryset = queryset.filter(in_archive=False)
+        return queryset
+
+
+class UserRealtyView(ListView):
+    paginate_by: int = 10
+    model: Type[Model] = Realty
+
+    def get_queryset(self) -> QuerySet:
+        queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            queryset = Realty.objects.filter(saller__created_by=self.request.user.pk)
         return queryset
 
 

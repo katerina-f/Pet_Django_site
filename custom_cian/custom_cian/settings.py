@@ -201,7 +201,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@redis', 6379), ],
+            "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@redis:6379/0'), ],
             "symmetric_encryption_keys": [config("SECRET_KEY")],
         },
     },

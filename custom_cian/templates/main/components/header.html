@@ -31,7 +31,7 @@
                         <li><a class="dropdown-item" href="/admin">Администрирование</a></li>
                     {% endif %}
                     <li><a class="dropdown-item" href="{% url 'update_profile' user.pk %}">Изменить профиль</a></li>
-                    <li><a class="dropdown-item" href="#">Мои объявления</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user_realty_list' %}">Мои объявления</a></li>
                     <li><a class="dropdown-item" href="{% url 'account_email' %}">Изменить E-mail</a></li>
                     <li><a class="dropdown-item" href="{% url 'account_logout' %}">Выход</a></li>
                 </ul>
