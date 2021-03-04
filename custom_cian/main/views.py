@@ -24,7 +24,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from .models import Realty, Tag, Saller, Subscriber
+from .models import Realty, Tag, Saller, Subscriber, UserRealty
 from .forms import RealtyForm, SallerProfileForm
 
 from .tasks import send_email_task
@@ -131,12 +131,12 @@ class RealtyListView(ListView):
 
 class UserRealtyView(ListView):
     paginate_by: int = 10
-    model: Type[Model] = Realty
+    model: Type[Model] = UserRealty
 
     def get_queryset(self) -> QuerySet:
         queryset = super().get_queryset()
         if self.request.user.is_authenticated:
-            queryset = Realty.objects.filter(saller__created_by=self.request.user.pk)
+            queryset = self.model.objects.filter(user_id=self.request.user.pk)
         return queryset
 
 

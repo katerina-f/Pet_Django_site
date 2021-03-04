@@ -84,6 +84,22 @@ class Saller(models.Model):
         return reverse("update_profile", kwargs={"slug": self.created_by.pk})
 
 
+class UserRealty(models.Model):
+    user_id = models.IntegerField(verbose_name="USER_ID")
+    first_name = models.CharField(verbose_name="Имя", max_length=50)
+    last_name = models.CharField(verbose_name="Фамилия", max_length=50)
+    realty_title = models.CharField(verbose_name="Название объекта", max_length=100)
+    realty_description = models.TextField(verbose_name="Описание объекта")
+    tags = ArrayField(models.CharField(max_length=200), blank=True, default=list)
+
+    class Meta:
+        managed = False
+        db_table = "userrealty"
+
+    def __str__(self):
+        return self.realty_title
+
+
 class Category(models.Model):
     """
     Класс, описывающий категорию объектов недвижимости
