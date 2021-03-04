@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     sql = """
         CREATE OR REPLACE VIEW userrealty AS
-        SELECT a.id as user_id, a.first_name as first_name, a.last_name as last_name,
+        SELECT r.id as id, a.id as user_id, a.first_name as first_name, a.last_name as last_name,
         r.name AS realty_title, r.description AS realty_description,
         r.tags AS tags
         FROM main_realty as r
@@ -20,5 +20,6 @@ class Migration(migrations.Migration):
         """
 
     operations = [
+        migrations.RunSQL("""DROP VIEW IF EXISTS userrealty """),
         migrations.RunSQL(sql)
     ]

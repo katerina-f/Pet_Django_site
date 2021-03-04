@@ -132,6 +132,7 @@ class RealtyListView(ListView):
 class UserRealtyView(ListView):
     paginate_by: int = 10
     model: Type[Model] = UserRealty
+    template_name = "main/user_realty_list.html"
 
     def get_queryset(self) -> QuerySet:
         queryset = super().get_queryset()
