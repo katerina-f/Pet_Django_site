@@ -206,3 +206,45 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+       'verbose': {
+           'format': '[%(asctime)s]%(name)s.%(module)s %(className)s::%(funcName)s[%(lineno)d]: %(levelname)s - %(message)s',
+       },
+       'simple': {
+           'format': '[%(asctime)s]%(name)s: %(levelname)s - %(message)s',
+       }
+    },
+    'handlers': {
+        'django_info_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/debug.log',
+            'formatter': 'simple'
+        },
+        'django_error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/error.log',
+            'formatter': 'simple'
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django_info_file', 'django_error_file'],
+            'level': config('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        },
+        'main': {
+
+        }
+    },
+}
