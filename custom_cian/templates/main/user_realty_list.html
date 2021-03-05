@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Realty List
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <div class="row mt-4 align-items-start">
+            {% for realty in page_obj.object_list %}
+                <div class="col-sm-6 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ realty.realty_title }}
+                            </h5>
+                            <div>
+                                {{realty.realty_description}}
+                            </div>
+                            <div>
+                                Тэги: {{ realty.tags }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2>Авторизуйтесь, чтобы увидеть свои объявления</h2>
+    {% endif %}
+    {% if is_paginated %}
+        {% include "main/components/pagination.html" %}
+    {% endif %}
+{% endblock %}
