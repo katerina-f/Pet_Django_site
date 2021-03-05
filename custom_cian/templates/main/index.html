@@ -4,6 +4,11 @@
 {% load custom_filters %}
 {% current_time "%Y-%m-%d %I:%M %p" as the_time %}
 
+{% block extratags %}
+    <meta name="description" content="Custom Cian - удобная платформа для покупки и продажи недвижимости">
+    <meta name="keywords" content="квартира, недвижимость, купить, продать" />
+{% endblock %}
+
 {% block title %}
     IndexPage
 {% endblock %}

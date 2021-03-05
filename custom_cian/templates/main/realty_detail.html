@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block extratags %}
+    <meta name="description" content="{{realty.description}}">
+    <meta name="keywords" content="{{realty.name}}, купить, продать" />
+{% endblock %}
+
+
 {% block title %}
     Realty Detail
 {% endblock %}
