@@ -14,56 +14,54 @@
 {% endblock %}
 
 {% block content %}
-    <div class="content" itemscope itemtype="{% url 'index' %}">
-        <h2 itemprop="indextitle">Дефолтная страница сайта</h2>
-        <h4>Текущее время: <time itemprop="dateNow" datetime="2013-08-29"></time>{% current_time "%d-%m-%Y %I:%M" as the_time %} {{the_time}}</time></h4>
-        <div style="display: block;"><a href="/pages/about/">О нас</a></div>
-        <div style="display: block;"><a href="/pages/contacts/">Контакты</a></div>
+    <h2>Дефолтная страница сайта</h2>
+    <h4>Текущее время: {% current_time "%d-%m-%Y %I:%M" as the_time %} {{the_time}}</h4>
+    <div style="display: block;"><a href="/pages/about/">О нас</a></div>
+    <div style="display: block;"><a href="/pages/contacts/">Контакты</a></div>
 
-        <div class="card">
-            Строка "Привет мир!" с фильтром: <b>{{ "Привет мир!"|reverse_string }}</b>
-        </div>
-        {% if turn_on_block %}
-            <div class="card" itemscope>
-                <div class="card-body">
-                    <h5>Узнай у бота контакты продавца недвижимости</h5>
-                    <textarea id="chat-log" cols="30" rows="10"></textarea><br>
-                    <input id="chat-message-input" type="text"><br>
-                    <input id="chat-message-submit" type="button" value="Send">
-                    <script>
-                        const chatSocket = new WebSocket(
-                            'ws://'
-                            + window.location.host
-                            + '/chat/'
-                        );
-
-                        chatSocket.onmessage = function(e) {
-                            const data = JSON.parse(e.data);
-                            document.querySelector('#chat-log').value += (data.message + '\n');
-                        };
-
-                        chatSocket.onclose = function(e) {
-                            console.error('Chat socket closed unexpectedly');
-                        };
-
-                        document.querySelector('#chat-message-input').focus();
-                        document.querySelector('#chat-message-input').onkeyup = function(e) {
-                            if (e.keyCode === 13) {  // enter, return
-                                document.querySelector('#chat-message-submit').click();
-                            }
-                        };
-
-                        document.querySelector('#chat-message-submit').onclick = function(e) {
-                            const messageInputDom = document.querySelector('#chat-message-input');
-                            const message = messageInputDom.value;
-                            chatSocket.send(JSON.stringify({
-                                'message': message
-                            }));
-                            messageInputDom.value = '';
-                        };
-                    </script>
-                </div>
-            </div>
-        {% endif %}
+    <div class="card">
+        Строка "Привет мир!" с фильтром: <b>{{ "Привет мир!"|reverse_string }}</b>
     </div>
+    {% if turn_on_block %}
+        <div class="card" itemscope>
+            <div class="card-body">
+                <h5>Узнай у бота контакты продавца недвижимости</h5>
+                <textarea id="chat-log" cols="30" rows="10"></textarea><br>
+                <input id="chat-message-input" type="text"><br>
+                <input id="chat-message-submit" type="button" value="Send">
+                <script>
+                    const chatSocket = new WebSocket(
+                        'ws://'
+                        + window.location.host
+                        + '/chat/'
+                    );
+
+                    chatSocket.onmessage = function(e) {
+                        const data = JSON.parse(e.data);
+                        document.querySelector('#chat-log').value += (data.message + '\n');
+                    };
+
+                    chatSocket.onclose = function(e) {
+                        console.error('Chat socket closed unexpectedly');
+                    };
+
+                    document.querySelector('#chat-message-input').focus();
+                    document.querySelector('#chat-message-input').onkeyup = function(e) {
+                        if (e.keyCode === 13) {  // enter, return
+                            document.querySelector('#chat-message-submit').click();
+                        }
+                    };
+
+                    document.querySelector('#chat-message-submit').onclick = function(e) {
+                        const messageInputDom = document.querySelector('#chat-message-input');
+                        const message = messageInputDom.value;
+                        chatSocket.send(JSON.stringify({
+                            'message': message
+                        }));
+                        messageInputDom.value = '';
+                    };
+                </script>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

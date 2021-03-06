@@ -3,6 +3,21 @@
 {% block extratags %}
     <meta name="description" content="{{realty.description}}">
     <meta name="keywords" content="{{realty.name}}, купить, продать" />
+    <script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "Realty",
+    "name":"{{ realty.title }}",
+    "category":{
+        "@type":"Category",
+        "text":"{{ realty.category }}"
+                },
+    "saller"{
+        "@type":"Saller",
+        "saller_name": "{{realty.saller.first_name}} {{realty.saller.last_name}}"
+                }
+    }
+    </script>
 {% endblock %}
 
 
