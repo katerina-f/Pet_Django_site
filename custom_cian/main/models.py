@@ -85,6 +85,15 @@ class Saller(models.Model):
 
 
 class UserRealty(models.Model):
+    """
+    Класс, описывающий postgres view связи пользователя с его объявлениями
+    :param user_id: ID пользователя из таблицы auth_user
+    :param first_name: Имя пользователя
+    :param last_name: Фамилия пользователя
+    :param realty_title: Название объекта
+    :param realty_description: Детальное описание объекта
+    :param tags: Тэги для объекта
+    """
     user_id = models.IntegerField(verbose_name="USER_ID")
     first_name = models.CharField(verbose_name="Имя", max_length=50)
     last_name = models.CharField(verbose_name="Фамилия", max_length=50)

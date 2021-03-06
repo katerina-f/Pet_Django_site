@@ -13,11 +13,37 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 from decouple import AutoConfig
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 config = AutoConfig(search_path=BASE_DIR)
+
+# Sentry integration
+sentry_sdk.init(
+    dsn=config('SENTRY_DSN'),
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+
+    # By default the SDK will try to use the SENTRY_RELEASE
+    # environment variable, or infer a git commit
+    # SHA as release, however you may want to set
+    # something more human-readable.
+    # release="myapp@1.0.0",
+)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -60,6 +86,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'main.middleware.MobileMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -203,6 +230,50 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             "hosts": [(f'redis://:{config("REDIS_PASSWORD")}@redis:6379/0'), ],
             "symmetric_encryption_keys": [config("SECRET_KEY")],
+        },
+    },
+}
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+       'verbose': {
+           'format': '[%(asctime)s]%(name)s.%(module)s %(className)s::%(funcName)s[%(lineno)d]: %(levelname)s - %(message)s',
+       },
+       'simple': {
+           'format': '[%(asctime)s]%(name)s: %(levelname)s - %(message)s',
+       }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'level': 'DEBUG',
+        },
+        'django_info_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/debug.log',
+            'formatter': 'simple'
+        },
+        'django_error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/error.log',
+            'formatter': 'simple'
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django_info_file', 'django_error_file'],
+            'level': config('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
         },
     },
 }

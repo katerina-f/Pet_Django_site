@@ -87,7 +87,7 @@ def subscribe_on_novelty(request: HttpRequest) -> \
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    turn_on_block = True
+    turn_on_block = not request.mobile
     params = {"turn_on_block": turn_on_block}
     return render(request, "main/index.html", params)
 
