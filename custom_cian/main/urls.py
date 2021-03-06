@@ -1,12 +1,13 @@
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
 
-from . import views, sitemaps
+from . import views
+from .sitemap import RealtySitemap, StaticPagesSitemap
 
 
 sitemaps = {
-    "realty_objects": sitemaps.RealtySitemap,
-    "static": sitemaps.StaticPagesSitemap
+    "realty_objects": RealtySitemap,
+    "static": StaticPagesSitemap
 }
 
 
