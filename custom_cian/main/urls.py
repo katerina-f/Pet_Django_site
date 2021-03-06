@@ -1,6 +1,13 @@
 from django.urls import path, include
+from django.contrib.sitemaps.views import sitemap
 
-from . import views
+from . import views, sitemaps
+
+
+sitemaps = {
+    "realty_objects": sitemaps.RealtySitemap,
+    "static": sitemaps.StaticPagesSitemap
+}
 
 
 urlpatterns = [
@@ -14,4 +21,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('subscribe/', views.subscribe_on_novelty, name="subscribe"),
     path('search/', views.SearchListView.as_view(), name="search"),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap')
 ]
