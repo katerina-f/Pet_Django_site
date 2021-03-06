@@ -1,5 +1,6 @@
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
+from django.views.generic.base import TemplateView
 
 from . import views
 from .sitemap import RealtySitemap, StaticPagesSitemap
@@ -23,5 +24,10 @@ urlpatterns = [
     path('subscribe/', views.subscribe_on_novelty, name="subscribe"),
     path('search/', views.SearchListView.as_view(), name="search"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
-         name='django.contrib.sitemaps.views.sitemap')
+         name='django.contrib.sitemaps.views.sitemap'),
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt",
+                             content_type="text/plain"),
+    ),
 ]
