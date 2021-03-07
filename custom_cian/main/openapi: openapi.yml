@@ -1,0 +1,93 @@
+openapi: '3.0.2'
+info:
+  title: API Title
+  version: '1.0'
+servers:
+  - url: https://api.server.test/v1
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    Realty:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        published_at:
+          type: string
+          format: date-time
+        price:
+          type: integer
+          format: int64
+        space:
+          type: integer
+          format: int64
+        tags:
+          type: array
+        category:
+          type: integer
+          format: int64
+        slug:
+          type: string
+        is_mortgage_available:
+          type: boolean
+        counter:
+          type: integer
+          format: int64
+        in_archive:
+          type: boolean
+        saller:
+          type: integer
+          format: int64
+
+paths:
+  /realty_list/add/:
+    post:
+      description: "Add brand new realty to service"
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Invalid request data
+
+  /realty_list/{realty_slug}:
+    get:
+      description: "Get realty object associated with slug in path"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+
+  /realty_list:
+    get:
+      description: "All of realty objects from server"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Realty'
