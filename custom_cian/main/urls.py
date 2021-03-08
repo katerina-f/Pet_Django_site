@@ -16,6 +16,9 @@ sitemaps = {
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'realty_list', views.RealtyViewSet)
+router.register(r'categories', views.CategoryViewSet)
+router.register(r'sallers', views.SallerViewSet)
 
 
 urlpatterns = [

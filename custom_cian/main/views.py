@@ -25,9 +25,13 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 
-from .models import Realty, Tag, Saller, Subscriber, UserRealty
+from .models import Realty, Tag, Saller, Subscriber, UserRealty, Category
 from .forms import RealtyForm, SallerProfileForm
-from .serializers import UserSerializer, GroupSerializer
+from .serializers import UserSerializer, \
+                         GroupSerializer, \
+                         RealtySerializer, \
+                         CategorySerializer, \
+                         SallerSerializer
 
 from .tasks import send_email_task
 
@@ -239,4 +243,31 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class RealtyViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows realty objects to be viewed or edited.
+    """
+    queryset = Realty.objects.all()
+    serializer_class = RealtySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows categories to be viewed or edited.
+    """
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class SallerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows sallers to be viewed or edited.
+    """
+    queryset = Saller.objects.all()
+    serializer_class = SallerSerializer
     permission_classes = [permissions.IsAuthenticated]
