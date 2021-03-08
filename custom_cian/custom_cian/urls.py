@@ -28,6 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('', include('main.urls')),
-    path('main_api/', include(router.urls)),
+    path('api/v1/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
