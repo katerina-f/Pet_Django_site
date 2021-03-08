@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic.base import TemplateView
+from rest_framework import routers
 
 from . import views
 from .sitemap import RealtySitemap, StaticPagesSitemap
@@ -10,6 +11,11 @@ sitemaps = {
     "realty_objects": RealtySitemap,
     "static": StaticPagesSitemap
 }
+
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
 
 
 urlpatterns = [
@@ -30,4 +36,6 @@ urlpatterns = [
         TemplateView.as_view(template_name="robots.txt",
                              content_type="text/plain"),
     ),
+    path('api/v1/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
