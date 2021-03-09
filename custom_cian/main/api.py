@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from .models import Realty, Saller, Category
 from .serializers import UserSerializer, \
                          GroupSerializer, \
@@ -33,9 +35,17 @@ class RealtyViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows realty objects to be viewed or edited.
     """
-    queryset = Realty.objects.all()
+
     serializer_class = RealtySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend, )
+
+    def get_queryset(self):
+        queryset = Realty.objects.all()
+        tag = self.request.query_params.get('tag', None)
+        if tag is not None:
+            queryset = queryset.filter(tags__contains=tag)
+        return queryset
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

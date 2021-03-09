@@ -61,7 +61,7 @@ components:
           format: int64
 
 paths:
-  /realty_list/add/:
+  /realty_list/:
     post:
       description: "Add brand new realty to service"
       responses:
@@ -70,7 +70,7 @@ paths:
         '400':
           description: Invalid request data
 
-  /realty_list/{realty_slug}:
+  /realty_list/{realty_ID}:
     get:
       description: "Get realty object associated with slug in path"
       responses:
