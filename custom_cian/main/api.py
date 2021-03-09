@@ -11,6 +11,7 @@ from .serializers import UserSerializer, \
                          RealtySerializer, \
                          CategorySerializer, \
                          SallerSerializer
+from .filters import RealtyFilter
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -35,16 +36,17 @@ class RealtyViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows realty objects to be viewed or edited.
     """
-
+    queryset = Realty.objects.all()
     serializer_class = RealtySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = (DjangoFilterBackend, )
+    filterset_class = RealtyFilter
 
     def get_queryset(self):
-        queryset = Realty.objects.all()
+        queryset = super().get_queryset()
         tag = self.request.query_params.get('tag', None)
         if tag is not None:
-            queryset = queryset.filter(tags__contains=tag)
+            queryset = queryset.filter(tags__contains=[tag])
         return queryset
 
 
