@@ -12,6 +12,7 @@ from .serializers import UserSerializer, \
                          CategorySerializer, \
                          SallerSerializer
 from .filters import RealtyFilter
+from .permissions import IsOwnerOrReadOnly
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -38,7 +39,7 @@ class RealtyViewSet(viewsets.ModelViewSet):
     """
     queryset = Realty.objects.all()
     serializer_class = RealtySerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     filter_backends = (DjangoFilterBackend, )
     filterset_class = RealtyFilter
 

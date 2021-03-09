@@ -38,7 +38,7 @@ class RealtySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Realty
         fields = '__all__'
-        read_only_fields = ['counter', 'slug']
+        read_only_fields = ['counter', 'slug', 'saller']
 
     def to_representation(self, ret):
         ret = super().to_representation(ret)
