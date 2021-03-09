@@ -3,7 +3,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.views.generic.base import TemplateView
 from rest_framework import routers
 
-from . import views
+from . import views, api
 from .sitemap import RealtySitemap, StaticPagesSitemap
 
 
@@ -14,11 +14,11 @@ sitemaps = {
 
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
-router.register(r'realty_list', views.RealtyViewSet)
-router.register(r'categories', views.CategoryViewSet)
-router.register(r'sallers', views.SallerViewSet)
+router.register(r'users', api.UserViewSet)
+router.register(r'groups', api.GroupViewSet)
+router.register(r'realty_list', api.RealtyViewSet)
+router.register(r'categories', api.CategoryViewSet)
+router.register(r'sallers', api.SallerViewSet)
 
 
 urlpatterns = [
