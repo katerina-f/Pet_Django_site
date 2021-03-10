@@ -19,8 +19,7 @@ def create_test_data():
                     Permission.objects.get(codename="change_realty"),
                     Permission.objects.get(codename="view_realty")]
 
-    tags = [Tag.objects.create(name=name) for name in
-            ["у метро", "вторичка", "от собственника"]]
+    tags = ["у метро", "вторичка", "от собственника"]
 
     categories = [Category.objects.create(name=name) for name in
                   ["Квартира", "Офис", "Гараж"]]
@@ -38,14 +37,12 @@ def create_test_data():
 
     for i, category in enumerate(categories):
         for saller in [saller_1, saller_2]:
+            tag = tags[i]
             realty = Realty.objects.create(name=f"name {saller} {category}",
                                     price=12000000, space=75,
                                     description=f"description {saller} {category}",
                                     category=category, saller=saller,
-                                    is_mortgage_available=True)
-
-            tag = Tag.objects.get(pk=i+1)
-            realty.tags.set([tag])
+                                    is_mortgage_available=True, tags=[tag])
 
 
 class TestRealtyListView(TestCase):
@@ -148,7 +145,7 @@ class TestRealtyCreateView(TestCase):
             "price": 1000,
             "space": 20,
             "description": "test description",
-            "tags": 2,
+            "tags": ["вторичка"],
             "category": 1,
             "saller": 2,
             "is_mortgage_available": "on",
