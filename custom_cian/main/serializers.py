@@ -30,6 +30,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ['url', 'name']
+        read_only_fields = '__all__'
 
 
 class RealtySerializer(serializers.HyperlinkedModelSerializer):
